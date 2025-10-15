@@ -1,0 +1,18 @@
+# Node
+node_modules/
+package-lock.json
+
+# Playwright reports and outputs
+test-results/
+playwright-report/
+blob-report/
+allure-results/
+allure-report/
+
+# Environment files
+.env
+.env.*
+
+# OS / Editor
+.DS_Store
+.vscode/
