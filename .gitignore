@@ -1,18 +1,33 @@
-# Node
+# Dependencies
 node_modules/
-package-lock.json
 
-# Playwright reports and outputs
+# Test results
 test-results/
 playwright-report/
 blob-report/
 allure-results/
 allure-report/
 
-# Environment files
+# Environment variables
 .env
 .env.*
 
-# OS / Editor
+# System files
 .DS_Store
 .vscode/
+
+# Playwright
+.pw-user/
+
+# Explorer tool output
+explorer-dump.json
+
+# Codegen output
+tools/recorded.ts
+
+# Debug files
+debug-*.png
+debug-*.html
+
+# Logs
+*.log
