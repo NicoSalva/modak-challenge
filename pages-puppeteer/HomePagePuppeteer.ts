@@ -10,10 +10,10 @@ export class HomePagePuppeteer {
 
   async navigateToHomePage(): Promise<void> {
     console.log('Navigating to AliExpress homepage...');
-    await this.page.goto('https://www.aliexpress.com', { waitUntil: 'domcontentloaded' });
-    
-    // Wait for page to load
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await this.page.goto('https://www.aliexpress.com', { 
+      waitUntil: 'networkidle2',
+      timeout: 30000 
+    });
     
     const title = await this.page.title();
     console.log(`Page title: ${title}`);
@@ -40,7 +40,10 @@ export class HomePagePuppeteer {
             console.log(`Found verification element: ${selector}`);
             await element.click();
             console.log('Clicked verification element');
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            // Wait for potential navigation after clicking verification
+            await this.page.waitForNavigation({ timeout: 10000 }).catch(() => {
+              // If no navigation occurs, that's fine
+            });
             break;
           }
         } catch {
@@ -68,8 +71,8 @@ export class HomePagePuppeteer {
     
     console.log('Search completed');
     
-    // Wait for search results
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    // Wait for search results to load
+    await this.page.waitForNavigation({ timeout: 15000 });
     
     // Return the search URL for validation
     return this.page.url();

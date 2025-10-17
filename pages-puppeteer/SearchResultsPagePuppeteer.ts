@@ -16,7 +16,10 @@ export class SearchResultsPagePuppeteer {
       window.scrollTo(0, document.body.scrollHeight);
     });
     
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Wait for scroll to complete and elements to be visible
+    await this.page.waitForFunction(() => {
+      return window.scrollY > 0;
+    }, { timeout: 5000 });
     
     // Look for page "2" button using evaluate
     const secondPageButton = await this.page.evaluate((): boolean => {
@@ -40,8 +43,8 @@ export class SearchResultsPagePuppeteer {
       
       console.log('Clicked on page 2');
       
-      // Wait for page to load
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      // Wait for page 2 to load
+      await this.page.waitForNavigation({ timeout: 15000 });
     } else {
       console.log('Page 2 button not found, continuing with current page');
     }
@@ -64,11 +67,11 @@ export class SearchResultsPagePuppeteer {
       console.log(`First product URL: ${firstProductHref}`);
       
       // Navigate directly to the product page instead of clicking
-      await this.page.goto(firstProductHref, { waitUntil: 'domcontentloaded' });
+      await this.page.goto(firstProductHref, { 
+        waitUntil: 'networkidle2',
+        timeout: 30000 
+      });
       console.log('Navigated to first product page');
-      
-      // Wait for product page to load
-      await new Promise(resolve => setTimeout(resolve, 3000));
       
       return firstProductHref;
     } else {

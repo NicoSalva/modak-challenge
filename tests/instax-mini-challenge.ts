@@ -35,9 +35,8 @@ async function testInstaxMiniChallenge(): Promise<void> {
   const page = await browser.newPage();
   
   try {
-    // Set viewport and user agent
+    // Set viewport
     await page.setViewport({ width: 1366, height: 768 });
-    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
     
     // Set extra headers
     await page.setExtraHTTPHeaders({
