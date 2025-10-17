@@ -7,20 +7,18 @@ export class ProductPage {
     this.page = page;
   }
 
-  async verifyProductAvailability(): Promise<boolean> {
+  async getProductLinks(): Promise<number> {
     // Wait for page to load
     await this.page.waitForLoadState('domcontentloaded');
     
-    // Simple check: if we can see any links, assume product is available
-    try {
-      const productLink = this.page.getByRole('link');
-      await expect(productLink.first()).toBeVisible({ timeout: 5000 });
-      
-      console.log('✅ Product page loaded successfully - assuming available');
-      return true;
-    } catch {
-      console.log('❌ Could not verify product page loaded');
-      return false;
-    }
+    // Return count of product links found
+    const links = this.page.getByRole('link');
+    return await links.count();
+  }
+
+  async isProductPageLoaded(): Promise<boolean> {
+    // Check if we're on a product page
+    const url = this.page.url();
+    return url.includes('/item/') || url.includes('/product/');
   }
 }

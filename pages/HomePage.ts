@@ -52,9 +52,7 @@ export class HomePage {
     console.log('✅ Search completed, current URL:', this.page.url());
   }
 
-  async verifySearchResults(searchTerm: string): Promise<void> {
-    // Simple verification - just check that page loaded
-    console.log('Search results verification - URL:', this.page.url());
-    console.log('✅ Search completed successfully');
+  async getCurrentUrl(): Promise<string> {
+    return this.page.url();
   }
 }
