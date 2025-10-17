@@ -23,10 +23,13 @@ blob-report/
 allure-results/
 allure-report/
 
+# Puppeteer specific
+.pw-user/
+puppeteer-report/
+
 # Environment variables
 .env
 .env.*
-!.env.example
 
 # IDE and editor files
 .vscode/
@@ -109,6 +112,3 @@ public
 # Temporary folders
 tmp/
 temp/
-
-# Puppeteer user data
-.pw-user/
