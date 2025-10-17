@@ -37,6 +37,17 @@ describe('Instax Mini Challenge E2E Test', () => {
     }
   });
 
+  afterEach(async () => {
+    // Take screenshot on test failure for debugging
+    const testState = expect.getState();
+    if (testState.currentTestName && testState.testPath && testState.currentTestName.includes('failed')) {
+      await page.screenshot({ 
+        path: `test-failure-${Date.now()}.png`, 
+        fullPage: true 
+      });
+    }
+  });
+
   it('should navigate to AliExpress homepage successfully', async () => {
     await homePage.navigateToHomePage();
     
