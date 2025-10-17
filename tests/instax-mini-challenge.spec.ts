@@ -5,7 +5,24 @@ import { ProductPage } from '../pages/ProductPage';
 import { TestData } from '../testdata/TestData';
 
 test.describe('AliExpress Challenge - Instax Mini Search', () => {
-  test('should search for instax mini, go to second page, select item and verify availability', async ({ page }) => {
+  test('should search for instax mini, go to second page, select item and verify availability', async ({ page, context }) => {
+    
+    // Anti-bot measures
+    await context.addInitScript(() => {
+      Object.defineProperty(navigator, 'webdriver', {
+        get: () => undefined,
+      });
+      
+      if (!window.chrome) {
+        window.chrome = {};
+      }
+      if (!window.chrome.runtime) {
+        window.chrome.runtime = {
+          onConnect: undefined,
+          onMessage: undefined,
+        };
+      }
+    });
     
     // Initialize Page Objects
     const homePage = new HomePage(page);
