@@ -8,8 +8,83 @@ export class SearchResultsPagePuppeteer {
     this.page = page;
   }
 
+  async handleNotifications(): Promise<void> {
+    console.log('Checking for notifications in search results...');
+    
+    const notificationSelectors = [
+      'button[aria-label*="close" i]',
+      'button[aria-label*="dismiss" i]',
+      'button[title*="close" i]',
+      'button[title*="dismiss" i]',
+      '.notification-close',
+      '.popup-close',
+      '.modal-close',
+      '[data-testid*="close"]',
+      '[data-testid*="dismiss"]',
+      '.close-btn',
+      '.dismiss-btn'
+    ];
+
+    const textSelectors = [
+      '×',
+      '✕', 
+      'Close',
+      'Dismiss',
+      'No permitir',
+      'Not now',
+      'Later'
+    ];
+    
+    // Try CSS selectors first
+    for (const selector of notificationSelectors) {
+      try {
+        const element = await this.page.$(selector);
+        if (element) {
+          const isVisible = await element.isVisible();
+          if (isVisible) {
+            console.log(`Found notification close button: ${selector}`);
+            await element.click();
+            console.log('Notification closed successfully');
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for animation
+            return;
+          }
+        }
+      } catch (error) {
+        console.log(`Failed to interact with notification selector '${selector}': ${(error as Error).message}`);
+        continue;
+      }
+    }
+
+    // Try text-based selectors using evaluate
+    for (const text of textSelectors) {
+      try {
+        const found = await this.page.evaluate((buttonText) => {
+          const buttons = Array.from(document.querySelectorAll('button'));
+          const button = buttons.find(btn => btn.textContent?.trim() === buttonText);
+          if (button) {
+            (button as HTMLElement).click();
+            return true;
+          }
+          return false;
+        }, text);
+        
+        if (found) {
+          console.log(`Found and clicked notification close button with text: ${text}`);
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for animation
+          return;
+        }
+      } catch (error) {
+        console.log(`Failed to interact with text selector '${text}': ${(error as Error).message}`);
+        continue;
+      }
+    }
+  }
+
   async clickOnSecondPage(): Promise<void> {
     console.log('Looking for second page...');
+    
+    // Handle any notifications before proceeding
+    await this.handleNotifications();
     
     // Scroll to bottom to find pagination
     await this.page.evaluate(() => {
@@ -52,6 +127,9 @@ export class SearchResultsPagePuppeteer {
 
   async clickOnFirstProduct(): Promise<string> {
     console.log('Looking for first product...');
+    
+    // Handle any notifications before clicking product
+    await this.handleNotifications();
     
     // Find first product link - be more specific to avoid navigation links
     const productLinks = await this.page.$$('a[href*="/item/"], a[href*="/product/"]');

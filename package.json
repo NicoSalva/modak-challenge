@@ -3,16 +3,21 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "ts-node tests/instax-mini-challenge.ts",
-    "build": "tsc",
-    "manual-bypass": "node tools/manual-bypass.js"
+    "test": "jest --config config/jest.config.js",
+    "test:watch": "jest --config config/jest.config.js --watch",
+    "test:coverage": "jest --config config/jest.config.js --coverage",
+    "test:ci": "jest --config config/jest.config.js --ci --coverage --watchAll=false",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.8.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.2"
   },
