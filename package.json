@@ -3,17 +3,22 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test",
-    "test:headed": "npx playwright test --headed",
-    "codegen": "npx playwright codegen https://www.aliexpress.com",
-    "report": "npx playwright show-report"
+    "test": "ts-node tests/instax-mini-challenge.ts",
+    "build": "tsc",
+    "manual-bypass": "node tools/manual-bypass.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@playwright/test": "^1.56.0",
+    "@types/node": "^24.8.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "puppeteer": "^24.25.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   }
 }
