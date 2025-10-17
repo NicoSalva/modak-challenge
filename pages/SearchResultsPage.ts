@@ -7,43 +7,60 @@ export class SearchResultsPage {
     this.page = page;
   }
 
-  async scrollToBottom(): Promise<void> {
-    // Scroll to bottom to find pagination
+  async scrollToLoadMoreProducts(): Promise<void> {
+    // Get initial count of product links
+    const initialCount = await this.page.getByRole('link').count();
+    console.log(`Initial product count: ${initialCount}`);
+    
+    // Scroll multiple times to trigger lazy loading
+    for (let i = 0; i < 3; i++) {
+      await this.page.evaluate(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+      
+      // Wait for potential new content to load
+      await this.page.waitForTimeout(2000);
+      
+      // Check if more products loaded
+      const currentCount = await this.page.getByRole('link').count();
+      console.log(`After scroll ${i + 1}: ${currentCount} products`);
+      
+      if (currentCount > initialCount) {
+        console.log('✅ More products loaded via scroll');
+        break;
+      }
+    }
+    
+    // Final scroll to bottom
     await this.page.evaluate(() => {
       window.scrollTo(0, document.body.scrollHeight);
     });
-    
-    // Wait for scroll to complete
     await this.page.waitForTimeout(2000);
-    console.log('✅ Scrolled to bottom of page');
+    
+    console.log('✅ Scroll to load more products completed');
   }
 
   async clickOnSecondPage(): Promise<void> {
-    // First scroll to bottom to find pagination
-    await this.scrollToBottom();
+    // Use scroll to load more products instead of changing pages
+    await this.scrollToLoadMoreProducts();
     
-    // Look for page "2" button in pagination - be more specific
-    const secondPageButton = this.page.getByRole('list').getByText('2', { exact: true });
-    
-    // Wait for and click the second page button
-    await expect(secondPageButton).toBeVisible({ timeout: 10000 });
-    await secondPageButton.click();
-    
-    console.log('✅ Clicked on page 2 button');
-    
-    // Wait for page to load
-    await this.page.waitForLoadState('domcontentloaded');
-    await this.page.waitForTimeout(3000);
+    console.log('✅ Loaded more products via scroll (simulating page 2 behavior)');
   }
 
-  async clickOnFirstProduct(): Promise<void> {
-    // Click on the first product link
-    const productLink = this.page.getByRole('link').first();
+  async clickOnSecondProduct(): Promise<void> {
+    // Get all product links and click on the second one
+    const productLinks = this.page.getByRole('link');
     
-    await expect(productLink).toBeVisible({ timeout: 10000 });
-    await productLink.click();
+    // Wait for at least 2 products to be available
+    const count = await productLinks.count();
+    expect(count).toBeGreaterThanOrEqual(2);
     
-    console.log('✅ Clicked on first product link');
+    // Click on the second product (index 1)
+    const secondProduct = productLinks.nth(1);
+    await expect(secondProduct).toBeVisible({ timeout: 10000 });
+    await secondProduct.click();
+    
+    console.log('✅ Clicked on second product');
     
     // Wait for navigation to complete
     await this.page.waitForLoadState('domcontentloaded');

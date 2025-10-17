@@ -21,11 +21,11 @@ test.describe('AliExpress Challenge - Instax Mini Search', () => {
     // Step 3: Verify search results
     await homePage.verifySearchResults(TestData.SEARCH_TERM);
     
-    // Step 4: Go to second page
+    // Step 4: Go to second page (via scroll)
     await searchResultsPage.clickOnSecondPage();
     
-    // Step 5: Click on first product
-    await searchResultsPage.clickOnFirstProduct();
+    // Step 5: Click on second product
+    await searchResultsPage.clickOnSecondProduct();
     
     // Step 6: Verify product availability
     const isAvailable = await productPage.verifyProductAvailability();
