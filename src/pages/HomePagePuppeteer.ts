@@ -9,8 +9,6 @@ export class HomePagePuppeteer {
   }
 
   async handleNotifications(): Promise<void> {
-    console.log('Checking for notifications to close...');
-    
     const notificationSelectors = [
       'button[aria-label*="close" i]',
       'button[aria-label*="dismiss" i]',
@@ -42,15 +40,12 @@ export class HomePagePuppeteer {
         if (element) {
           const isVisible = await element.isVisible();
           if (isVisible) {
-            console.log(`Found notification close button: ${selector}`);
             await element.click();
-            console.log('Notification closed successfully');
             await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for animation
             return;
           }
         }
       } catch (error) {
-        console.log(`Failed to interact with notification selector '${selector}': ${(error as Error).message}`);
         continue;
       }
     }
@@ -69,19 +64,16 @@ export class HomePagePuppeteer {
         }, text);
         
         if (found) {
-          console.log(`Found and clicked notification close button with text: ${text}`);
           await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for animation
           return;
         }
       } catch (error) {
-        console.log(`Failed to interact with text selector '${text}': ${(error as Error).message}`);
         continue;
       }
     }
   }
 
   async navigateToHomePage(): Promise<void> {
-    console.log('Navigating to AliExpress homepage...');
     await this.page.goto('https://www.aliexpress.com', { 
       waitUntil: 'networkidle2',
       timeout: 30000 
@@ -91,7 +83,6 @@ export class HomePagePuppeteer {
     await this.handleNotifications();
     
     const title = await this.page.title();
-    console.log(`Page title: ${title}`);
     
     // Handle bot detection if present
     if (title.toLowerCase().includes('captcha') || 
@@ -130,22 +121,16 @@ export class HomePagePuppeteer {
   }
 
   async searchForProduct(searchTerm: string): Promise<string> {
-    console.log(`Searching for "${searchTerm}"...`);
-    
     // Find search box
     const searchBox = await this.page.$('input[type="text"]');
     if (!searchBox) {
       throw new Error('Search box not found');
     }
     
-    console.log('Search box found');
-    
     // Click and type search term
     await searchBox.click();
     await searchBox.type(searchTerm);
     await this.page.keyboard.press('Enter');
-    
-    console.log('Search completed');
     
     // Wait for search results to load
     await this.page.waitForNavigation({ timeout: 15000 });

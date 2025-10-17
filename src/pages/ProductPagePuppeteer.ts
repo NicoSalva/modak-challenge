@@ -20,27 +20,61 @@ export class ProductPagePuppeteer {
     return url.includes('/item/') || url.includes('/product/');
   }
 
+  async checkProductStock(): Promise<boolean> {
+    // Check if product has stock by looking for buy/add to cart buttons
+    const stockIndicators = [
+      'button[class*="add-to-cart"]',
+      'button[class*="buy-now"]',
+      'button:contains("Add to Cart")',
+      'button:contains("Buy Now")',
+      'button:contains("Comprar")',
+      'button:contains("Agregar al carrito")',
+      '[class*="quantity"] input',
+      '[class*="stock"]'
+    ];
+
+    for (const selector of stockIndicators) {
+      try {
+        if (selector.includes('contains')) {
+          // Use evaluate for text-based selectors
+          const found = await this.page.evaluate((text) => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            return buttons.some(btn => btn.textContent?.includes(text));
+          }, selector.split('"')[1]);
+          if (found) return true;
+        } else {
+          // Use regular CSS selector
+          const element = await this.page.$(selector);
+          if (element && await element.isVisible()) {
+            return true;
+          }
+        }
+      } catch (error) {
+        continue;
+      }
+    }
+    return false;
+  }
+
   async getProductPageData(): Promise<{
     url: string;
     isProductPage: boolean;
     interactiveElementsCount: number;
     title: string;
+    hasStock: boolean;
   }> {
-    console.log('Gathering product page data...');
-    
     const productUrl = this.page.url();
     const title = await this.page.title();
     const isProductPage = await this.isProductPageLoaded();
     const interactiveElementsCount = await this.getProductLinks();
-    
-    console.log(`Product URL: ${productUrl}`);
-    console.log(`Found ${interactiveElementsCount} interactive elements on product page`);
+    const hasStock = await this.checkProductStock();
     
     return {
       url: productUrl,
       isProductPage,
       interactiveElementsCount,
-      title
+      title,
+      hasStock
     };
   }
 
@@ -48,10 +82,8 @@ export class ProductPagePuppeteer {
     const data = await this.getProductPageData();
     
     if (data.isProductPage && data.interactiveElementsCount > 0) {
-      console.log('Product page has interactive elements - verification successful!');
       return true;
     } else {
-      console.log('Product page verification failed');
       return false;
     }
   }
