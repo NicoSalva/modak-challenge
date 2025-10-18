@@ -67,8 +67,6 @@ npm test
 # Run tests in watch mode (re-runs on file changes)
 npm run test:watch
 
-# Run tests with coverage report
-npm run test:coverage
 
 # Run tests for CI/CD (single run, no watch)
 npm run test:ci
@@ -88,7 +86,7 @@ npm run test:debug
 
 ### Cleanup Commands
 ```bash
-# Clean generated files (reports, screenshots, coverage)
+# Clean generated files (reports, screenshots)
 npm run qa:clean
 ```
 
@@ -163,7 +161,6 @@ PARALLEL=true npm test
 
 - **Test Results**: Shown in console output
 - **Screenshots**: Automatically captured on failures in `screenshots/`
-- **Coverage**: Generated in `coverage/` folder when using `npm run test:coverage`
 - **Reports**: Generated in `reports/` folder
 
 ## Contributing
