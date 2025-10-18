@@ -7,6 +7,5 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest',
   },
   testTimeout: 120000, // 2 minutes for e2e tests
-  setupFilesAfterEnv: ['<rootDir>/config/setup.ts'],
   maxWorkers: process.env.PARALLEL === 'true' ? 4 : 1,
 };
