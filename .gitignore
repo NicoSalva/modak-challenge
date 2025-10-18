@@ -9,7 +9,6 @@ dist/
 *.tsbuildinfo
 
 # Test results and reports
-coverage/
 reports/
 screenshots/
 *.png

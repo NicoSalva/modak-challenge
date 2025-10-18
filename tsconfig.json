@@ -15,9 +15,9 @@
     "sourceMap": true
   },
   "include": [
-    "pages-puppeteer/**/*",
+    "src/**/*",
     "tests/**/*",
-    "tools/**/*"
+    "config/**/*"
   ],
   "exclude": [
     "node_modules",

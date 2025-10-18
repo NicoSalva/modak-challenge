@@ -5,14 +5,13 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:ci": "jest --ci --coverage --watchAll=false",
+    "test:ci": "jest --ci --watchAll=false",
     "test:debug": "jest --verbose --no-cache",
     "test:headless": "HEADLESS=true jest",
     "test:parallel": "PARALLEL=true jest --maxWorkers=4",
     "build": "tsc",
     "qa:setup": "mkdir -p screenshots reports",
-    "qa:clean": "rm -rf screenshots reports coverage"
+    "qa:clean": "rm -rf screenshots reports"
   },
   "keywords": [],
   "author": "",
