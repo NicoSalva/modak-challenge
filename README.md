@@ -57,6 +57,18 @@ npm run qa:setup
 
 This creates the necessary directories for reports and screenshots.
 
+### 4. Environment Configuration (Optional)
+```bash
+# Copy environment template
+cp env.example .env
+
+# Edit .env file to customize settings
+# HEADLESS=false
+# BASE_URL=https://www.aliexpress.com
+# ENVIRONMENT=prod
+# PARALLEL=false
+```
+
 ## Running Tests
 
 ### Basic Commands
@@ -88,6 +100,12 @@ npm run test:debug
 ```bash
 # Clean generated files (reports, screenshots)
 npm run qa:clean
+```
+
+### Report Commands
+```bash
+# Open HTML test report in browser
+npm run report:open
 ```
 
 ## Test Objective
@@ -160,6 +178,7 @@ PARALLEL=true npm test
 ## Reporting
 
 - **Test Results**: Shown in console output
+- **HTML Report**: Beautiful HTML report generated in `reports/jest-report.html`
 - **Screenshots**: Automatically captured on failures in `screenshots/`
 - **Reports**: Generated in `reports/` folder
 

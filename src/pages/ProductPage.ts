@@ -1,7 +1,7 @@
 // pages-puppeteer/ProductPagePuppeteer.ts
 import { Page } from 'puppeteer';
 
-export class ProductPagePuppeteer {
+export class ProductPage {
   private page: Page;
 
   constructor(page: Page) {

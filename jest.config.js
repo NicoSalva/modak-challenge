@@ -8,4 +8,11 @@ module.exports = {
   },
   testTimeout: 120000, // 2 minutes for e2e tests
   maxWorkers: process.env.PARALLEL === 'true' ? 4 : 1,
+  reporters: [
+    "default",
+    ["jest-html-reporter", { 
+      pageTitle: "Modak Challenge Report", 
+      outputPath: "reports/jest-report.html" 
+    }]
+  ],
 };

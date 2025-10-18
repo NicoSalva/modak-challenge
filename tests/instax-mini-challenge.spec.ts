@@ -4,9 +4,9 @@ import { Browser, Page } from 'puppeteer';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 // Page Objects
-import { HomePagePuppeteer } from '../src/pages/HomePagePuppeteer';
-import { SearchResultsPagePuppeteer } from '../src/pages/SearchResultsPagePuppeteer';
-import { ProductPagePuppeteer } from '../src/pages/ProductPagePuppeteer';
+import { HomePage } from '../src/pages/HomePage';
+import { SearchResultsPage } from '../src/pages/SearchResultsPage';
+import { ProductPage } from '../src/pages/ProductPage';
 
 // Add stealth plugin
 puppeteer.use(StealthPlugin());
@@ -14,9 +14,9 @@ puppeteer.use(StealthPlugin());
 describe('Instax Mini Challenge E2E Test', () => {
   let browser: Browser;
   let page: Page;
-  let homePage: HomePagePuppeteer;
-  let searchResultsPage: SearchResultsPagePuppeteer;
-  let productPage: ProductPagePuppeteer;
+  let homePage: HomePage;
+  let searchResultsPage: SearchResultsPage;
+  let productPage: ProductPage;
 
   beforeAll(async () => {
     browser = await puppeteer.launch({
@@ -26,9 +26,9 @@ describe('Instax Mini Challenge E2E Test', () => {
 
     page = await browser.newPage();
 
-    homePage = new HomePagePuppeteer(page);
-    searchResultsPage = new SearchResultsPagePuppeteer(page);
-    productPage = new ProductPagePuppeteer(page);
+    homePage = new HomePage(page);
+    searchResultsPage = new SearchResultsPage(page);
+    productPage = new ProductPage(page);
   });
 
   afterAll(async () => {
