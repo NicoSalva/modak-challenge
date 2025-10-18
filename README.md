@@ -60,7 +60,7 @@ This creates the necessary directories for reports and screenshots.
 ### 4. Environment Configuration (Optional)
 ```bash
 # Copy environment template
-cp env.example .env
+cp .env.example .env
 
 # Edit .env file to customize settings
 # HEADLESS=false
