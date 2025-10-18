@@ -173,3 +173,61 @@ PARALLEL=true npm test
 3. Make your changes
 4. Run tests to ensure everything works
 5. Submit a pull request
+
+---
+
+## Technical Solution Overview
+
+### Challenge Approach
+
+When I started this challenge, I knew AliExpress would be a tough target due to their sophisticated bot detection systems. My initial approach was to use Playwright, which I'm familiar with, but I quickly realized that their anti-automation measures were more aggressive than expected.
+
+### Technology Migration Journey
+
+**Playwright → Puppeteer Migration**
+
+The main reason for switching from Playwright to Puppeteer was bot detection. Despite implementing various stealth techniques in Playwright (custom user agents, viewport settings, context options, and even custom stealth utilities), AliExpress consistently detected the automation and showed "unusual activity" warnings or captcha challenges.
+
+Puppeteer with the `puppeteer-extra-plugin-stealth` proved to be significantly more effective at bypassing these detection mechanisms. The stealth plugin handles many of the common automation detection vectors that websites use, and it's specifically designed for this purpose.
+
+**JavaScript → TypeScript Migration**
+
+I migrated to TypeScript for better code maintainability and type safety. Working with Page Objects and complex selectors benefits greatly from static typing, especially when dealing with Puppeteer's API. It also makes the codebase more professional and easier to scale for larger teams.
+
+**Standalone Script → Jest Framework**
+
+The final migration to Jest was driven by the need for a more professional testing framework. Jest provides better test organization, reporting, and debugging capabilities. It also integrates well with CI/CD pipelines and provides better error messages and test isolation.
+
+### Architecture Decisions
+
+**Page Object Model (POM)**
+
+I implemented POM to separate test logic from page interaction logic. This makes tests more readable and maintainable. Each page has its own class with methods that represent user actions, making it easy to understand what each test is doing.
+
+**Centralized Configuration**
+
+I created a centralized configuration system (`TestConfig.ts`) that allows easy switching between different environments (dev, staging, prod) and test modes (headless, parallel, etc.). This makes the solution more flexible and enterprise-ready.
+
+**Test Data Management**
+
+The `TestData.ts` file centralizes all test parameters, making it easy to modify search terms, timeouts, and expected results without touching the test code. This is crucial for maintaining tests across different environments.
+
+**QA Utilities**
+
+I built reusable utilities (`QAUtils.ts`) for common QA tasks like taking screenshots, logging page information, and validating page loads. These utilities make debugging easier and provide better visibility into test execution.
+
+### Anti-Bot Detection Strategy
+
+The key to success was using `puppeteer-extra-plugin-stealth` combined with:
+- Realistic browser fingerprinting
+- Proper timing between actions
+- Handling of pop-ups and notifications
+- Fallback strategies for element detection
+
+### Why This Solution Works
+
+1. **Reliability**: Puppeteer with stealth plugin consistently bypasses AliExpress bot detection
+2. **Maintainability**: TypeScript and POM make the code easy to understand and modify
+3. **Scalability**: Centralized configuration and utilities make it easy to add new tests
+4. **Professional**: Jest framework and proper error handling make it production-ready
+5. **Debuggable**: Screenshots on failure and detailed logging help troubleshoot issues
