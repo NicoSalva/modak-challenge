@@ -1,0 +1,175 @@
+# Modak Challenge - E2E Testing
+
+## Overview
+End-to-end testing solution for AliExpress using Puppeteer + TypeScript + Jest.
+
+## Prerequisites
+
+### 1. Install Node.js
+If you don't have Node.js installed:
+
+**Option A: Download from official website**
+1. Go to [nodejs.org](https://nodejs.org/)
+2. Download the LTS version (18+ recommended)
+3. Run the installer and follow the instructions
+
+**Option B: Using Homebrew (macOS)**
+```bash
+brew install node
+```
+
+**Option C: Using Chocolatey (Windows)**
+```bash
+choco install nodejs
+```
+
+### 2. Verify Installation
+```bash
+node --version
+npm --version
+```
+
+You should see version numbers for both commands.
+
+## Installation
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/NicoSalva/modak-challenge.git
+cd modak-challenge
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+This will install all required packages:
+- Puppeteer (browser automation)
+- TypeScript (type safety)
+- Jest (testing framework)
+- Stealth plugin (anti-bot detection)
+
+### 3. Setup QA Directories
+```bash
+npm run qa:setup
+```
+
+This creates the necessary directories for reports and screenshots.
+
+## Running Tests
+
+### Basic Commands
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode (re-runs on file changes)
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Run tests for CI/CD (single run, no watch)
+npm run test:ci
+```
+
+### Advanced Commands
+```bash
+# Run tests in headless mode (no browser window)
+npm run test:headless
+
+# Run tests in parallel (faster execution)
+npm run test:parallel
+
+# Run tests with verbose output (for debugging)
+npm run test:debug
+```
+
+### Cleanup Commands
+```bash
+# Clean generated files (reports, screenshots, coverage)
+npm run qa:clean
+```
+
+## Test Objective
+
+The main test verifies the following feature:
+
+> **As a Customer, we want to see if the second item from the second results page when searching for "instax mini" on www.aliexpress.com has at least 1 item to be bought.**
+
+### Test Flow
+1. Navigate to AliExpress homepage
+2. Search for "instax mini"
+3. Navigate to second page of results
+4. Click on the second product
+5. Verify the product has stock available
+
+## Technologies Used
+
+- **Puppeteer**: Headless browser automation
+- **TypeScript**: Static typing for better code quality
+- **Jest**: JavaScript testing framework
+- **Page Object Model**: Maintainable test architecture
+- **puppeteer-extra-plugin-stealth**: Anti-bot detection bypass
+
+## Troubleshooting
+
+### Common Issues
+
+**1. Bot Detection**
+- The tests include stealth mode to avoid detection
+- If you still get blocked, try running in headless mode: `npm run test:headless`
+
+**2. Timeouts**
+- Tests have a 2-minute timeout
+- If tests fail due to timeouts, check your internet connection
+
+**3. Element Not Found**
+- Screenshots are automatically captured on test failures
+- Check the `screenshots/` folder for debugging
+
+**4. Node.js Version Issues**
+- Ensure you have Node.js 18+ installed
+- Check with: `node --version`
+
+### Getting Help
+
+If you encounter issues:
+1. Check the `screenshots/` folder for failure screenshots
+2. Run tests with verbose output: `npm run test:debug`
+3. Ensure all dependencies are installed: `npm install`
+4. Clean and reinstall if needed: `npm run qa:clean && npm install`
+
+## Environment Variables
+
+You can customize test behavior with environment variables:
+
+```bash
+# Run in headless mode
+HEADLESS=true npm test
+
+# Use different base URL
+BASE_URL=https://staging.aliexpress.com npm test
+
+# Set environment
+ENVIRONMENT=staging npm test
+
+# Enable parallel execution
+PARALLEL=true npm test
+```
+
+## Reporting
+
+- **Test Results**: Shown in console output
+- **Screenshots**: Automatically captured on failures in `screenshots/`
+- **Coverage**: Generated in `coverage/` folder when using `npm run test:coverage`
+- **Reports**: Generated in `reports/` folder
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests to ensure everything works
+5. Submit a pull request
