@@ -23,6 +23,8 @@ playwright-report/
 blob-report/
 allure-results/
 allure-report/
+reports/
+screenshots/
 
 # Puppeteer specific
 .pw-user/
